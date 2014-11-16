@@ -1,0 +1,28 @@
+{
+  "name": "learnyounode-answers",
+  "version": "1.0.0",
+  "description": "Answers about learnyounode course, about nodeschool",
+  "main": "program.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iranreyes/learnyounode-answers.git"
+  },
+  "keywords": [
+    "learnyounode",
+    "nodeschool",
+    "node",
+    "javacript"
+  ],
+  "author": "Iran Reyes Fleitas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iranreyes/learnyounode-answers/issues"
+  },
+  "homepage": "https://github.com/iranreyes/learnyounode-answers",
+  "dependencies": {
+    "learnyounode": "^1.0.6"
+  }
+}
