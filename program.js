@@ -1,8 +1,24 @@
-var counter = 0;
+//Libraries
+var fs = require('fs');
 
-for (var i = 2, len = process.argv.length; i < len; i++) {
-	//Optional => if(!isNaN(process.argv[i]))
-	counter += parseInt(process.argv[i]);
-};
+if(process.argv.length < 3)
+{
+	console.log('Incorrect arguments');
+	return;
+}
 
-console.log(counter);
+var filename = process.argv[2];
+
+var data;
+try {
+  data = fs.readFileSync(filename);
+} catch (e) {
+	if (e.code === 'ENOENT') {
+	  console.log('File not found!');
+	} else {
+	  throw e;
+	}
+}
+
+var splitted = data.toString().split('\n');
+console.log(splitted.length-1);
