@@ -1,8 +1,7 @@
 //Libraries
-var fs = require('fs');
-var path = require('path');
+var extfs = require("./extfs.js")
 
-if(process.argv.length < 4)
+if(process.argv.length < 3)
 {
 	console.log('Incorrect arguments');
 	return;
@@ -11,20 +10,15 @@ if(process.argv.length < 4)
 var filename = process.argv[2];
 var filter = process.argv[3];
 
-//The callback can be an anonymous function
-fs.readdir(filename, callback);
+extfs(filename, filter, callback);
 
-function callback(err, list){
-
-	if(err)
+function callback(err, data){
+	if (err) 
+		console.log(err);
+	else 
 	{
-		console.log('There has been ocurred an error, more info: \n' + err);
-		return;
-	}
-
-	for (var i = 0, len=list.length; i < len; i++) {
-		//I wait for the filter without the "."
-		if(path.extname(list[i]) === "." + filter)
-			console.log(list[i]);
-	}
-};
+		for (var i = 0, len = data.length; i < len; i++) {
+			console.log(data[i]);
+		};
+	}  
+}
