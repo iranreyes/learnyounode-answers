@@ -9,16 +9,17 @@ if(process.argv.length < 3)
 
 var filename = process.argv[2];
 
-var data;
-try {
-  data = fs.readFileSync(filename);
-} catch (e) {
-	if (e.code === 'ENOENT') {
-	  console.log('File not found!');
-	} else {
-	  throw e;
-	}
-}
+fs.readFile(filename, callback);
 
-var splitted = data.toString().split('\n');
-console.log(splitted.length-1);
+function callback(err, data){
+
+	if(err)
+	{
+		console.log('There has been ocurred an error, more info: \n' + err);
+		return;
+	}
+
+	var processedData = data.toString();
+	var splitted = processedData.split('\n');
+	console.log(splitted.length - 1);
+};
