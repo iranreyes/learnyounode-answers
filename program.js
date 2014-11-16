@@ -1,17 +1,20 @@
 //Libraries
 var fs = require('fs');
+var path = require('path');
 
-if(process.argv.length < 3)
+if(process.argv.length < 4)
 {
 	console.log('Incorrect arguments');
 	return;
 }
 
 var filename = process.argv[2];
+var filter = process.argv[3];
 
-fs.readFile(filename, callback);
+//The callback can be an anonymous function
+fs.readdir(filename, callback);
 
-function callback(err, data){
+function callback(err, list){
 
 	if(err)
 	{
@@ -19,7 +22,9 @@ function callback(err, data){
 		return;
 	}
 
-	var processedData = data.toString();
-	var splitted = processedData.split('\n');
-	console.log(splitted.length - 1);
+	for (var i = 0, len=list.length; i < len; i++) {
+		//I wait for the filter without the "."
+		if(path.extname(list[i]) === "." + filter)
+			console.log(list[i]);
+	}
 };
