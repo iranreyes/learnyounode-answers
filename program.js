@@ -1,5 +1,5 @@
 //Libraries
-var extfs = require("./extfs.js")
+var http = require("http");
 
 if(process.argv.length < 3)
 {
@@ -7,18 +7,14 @@ if(process.argv.length < 3)
 	return;
 }
 
-var filename = process.argv[2];
-var filter = process.argv[3];
+http.get(process.argv[2], function(response){
 
-extfs(filename, filter, callback);
+	response.setEncoding("utf8");
 
-function callback(err, data){
-	if (err) 
-		console.log(err);
-	else 
-	{
-		for (var i = 0, len = data.length; i < len; i++) {
-			console.log(data[i]);
-		};
-	}  
-}
+	response.on("data", function(data){
+		console.log(data);
+	});
+
+}).on('error', function(e) {
+  console.log("Got error: " + e.message);
+});
