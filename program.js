@@ -1,27 +1,42 @@
 //Libraries
 var http = require("http");
 
-if(process.argv.length < 3)
+if(process.argv.length < 5)
 {
 	console.log('Incorrect arguments');
 	return;
 }
 
-var data_return = "";
-http.get(process.argv[2], function(response){
+var mydata = ["","",""];
+var counter = 0;
 
-	response.setEncoding("utf8");
+for (var i = 2, len = process.argv.length; i < len; i++) {
+	httpQuery(process.argv[i],mydata, i-2);
+};
 
-	//Events
-	response.on("data", function(data){
-		data_return+=data;
+function httpQuery(url, mydata, index){
+	http.get(url, function(response){
+
+		response.setEncoding("utf8");
+
+		//Events
+		response.on("data", function(data){
+			mydata[index]+=data;
+		});
+
+		response.on("end", function(data){
+			counter++;
+			if(counter == 3){
+				printEnd();
+			}
+		});
+	}).on('error', function(e) {
+	  console.log("Got error: " + e.message);
 	});
+}
 
-	response.on("end", function(data){
-		console.log(data_return.length);
-		console.log(data_return);
-	});
-
-}).on('error', function(e) {
-  console.log("Got error: " + e.message);
-});
+function printEnd(){
+	for (var i = 0; i < mydata.length; i++) {
+		console.log(mydata[i]);
+	};
+}
