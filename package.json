@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/iranreyes/learnyounode-answers",
   "dependencies": {
-    "learnyounode": "^1.0.6"
+    "learnyounode": "^1.0.6",
+    "strftime": "^0.8.2"
   }
 }
