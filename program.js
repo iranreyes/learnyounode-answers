@@ -1,8 +1,9 @@
 //Libraries
 var http = require('http');
+var map = require('through2-map');
 var fs = require('fs');
 
-if(process.argv.length < 4)
+if(process.argv.length < 3)
 {
 	console.log('Incorrect arguments');
 	return;
@@ -10,18 +11,13 @@ if(process.argv.length < 4)
 
 var server = http.createServer(function(request, response){
 
-	var stream = fs.createReadStream(process.argv[3]);
+	request.pipe(map(function(chunk){
+		return chunk.toString().toUpperCase();
+	})).pipe(response);
 
-	stream.pipe(response);
-
-	stream.on('end', function(){
+	response.on('end', function(){
 		response.end();	
-	});
-
-	stream.on('error', function(err){
-		console.log(err);
-		response.end();
-	});
+	})
 });
 
 server.listen(process.argv[2]);
