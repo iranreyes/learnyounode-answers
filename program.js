@@ -1,29 +1,27 @@
 //Libraries
-var net = require('net');
+var http = require('http');
+var fs = require('fs');
 
-if(process.argv.length < 3)
+if(process.argv.length < 4)
 {
 	console.log('Incorrect arguments');
 	return;
 }
 
-var server = net.createServer(function(socket){
-	var date = new Date();
+var server = http.createServer(function(request, response){
 
-	//Fixing details
-	var month = (date.getMonth() + 1).toString();
-	var minutes = date.getMinutes();
-	if(minutes<10)
-		minutes = "0"+minutes;
+	var stream = fs.createReadStream(process.argv[3]);
 
-	var response = date.getFullYear() + "-" + 
-				   month + "-" + 
-				   date.getDate() + " " + 
-				   date.getHours() + ":" + 
-				   minutes + "\n";
-				   
-	socket.write(response);
-	socket.end();
+	stream.pipe(response);
+
+	stream.on('end', function(){
+		response.end();	
+	});
+
+	stream.on('error', function(err){
+		console.log(err);
+		response.end();
+	});
 });
 
 server.listen(process.argv[2]);
