@@ -1,42 +1,29 @@
 //Libraries
-var http = require("http");
+var net = require('net');
 
-if(process.argv.length < 5)
+if(process.argv.length < 3)
 {
 	console.log('Incorrect arguments');
 	return;
 }
 
-var mydata = ["","",""];
-var counter = 0;
+var server = net.createServer(function(socket){
+	var date = new Date();
 
-for (var i = 2, len = process.argv.length; i < len; i++) {
-	httpQuery(process.argv[i],mydata, i-2);
-};
+	//Fixing details
+	var month = (date.getMonth() + 1).toString();
+	var minutes = date.getMinutes();
+	if(minutes<10)
+		minutes = "0"+minutes;
 
-function httpQuery(url, mydata, index){
-	http.get(url, function(response){
+	var response = date.getFullYear() + "-" + 
+				   month + "-" + 
+				   date.getDate() + " " + 
+				   date.getHours() + ":" + 
+				   minutes + "\n";
+				   
+	socket.write(response);
+	socket.end();
+});
 
-		response.setEncoding("utf8");
-
-		//Events
-		response.on("data", function(data){
-			mydata[index]+=data;
-		});
-
-		response.on("end", function(data){
-			counter++;
-			if(counter == 3){
-				printEnd();
-			}
-		});
-	}).on('error', function(e) {
-	  console.log("Got error: " + e.message);
-	});
-}
-
-function printEnd(){
-	for (var i = 0; i < mydata.length; i++) {
-		console.log(mydata[i]);
-	};
-}
+server.listen(process.argv[2]);
